@@ -20,6 +20,10 @@ mysql.query("SELECT * FROM users")
     console.log("failed connect to DB");
 });
 
+app.get('/user', (req,res)=>{
+    res.send("Hello Hilllllelllllll")
+})
+
 
 app.listen(PORT,()=>{
     console.log(`server start on port: ${PORT}`);
