@@ -6,6 +6,7 @@ const morgan = require('morgan');
 require('express-async-errors');
 
 const testRoutes = require("./routes/testRouter");
+const loginRouter = require("./routes/loginRouter");
 //const mysql = require("./db/connection")
 
 const app = express();
@@ -19,6 +20,8 @@ app.use(express.json());
 
 //All routes start here
 app.use("/", testRoutes);
+app.use("/", loginRouter);
+
 
 //Global error handler
 app.use((err,req,res,next)=>{
