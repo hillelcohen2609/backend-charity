@@ -12,11 +12,11 @@ module.exports.login = async (req, res) => {
   console.log("username: ", username, "password: ", password);
   console.log("type of: ", typeof password);
   try {
-    const [data] = await mysql.query(
+    const [[data]] = await mysql.query(
       "SELECT * FROM `charity`.`users` WHERE (`user_name`=? AND `password`=?)",
       [username, password]
     );
-    const token = await getTokenFromCreds({ username, password });
+    const token = await getTokenFromCreds(data);
     res.cookie("token", token);
     res.send(data);
   } catch (error) {
@@ -43,9 +43,9 @@ module.exports.signin = async (req, res) => {
                 [username, password,age,numberPhone,1,0]
               );
               console.log("result: ",result);
-              const token =await getTokenFromCreds({username,password})
+              const token =await getTokenFromCreds({username,password,age,numberPhone,accessRights:1,trusted:0})
               res.cookie("token",token);
-              res.send("Successfully added to DB");
+              res.send({username,password,age,numberPhone,accessRights:1,trusted:0});
             } catch (error) {
                 console.log("error in inserting values");
                 res.status(401).send("error in inserting values");
