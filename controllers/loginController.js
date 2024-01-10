@@ -4,6 +4,10 @@ const {
   getTokenFromCreds,
 } = require("../middleware/authenticate");
 
+//access cookie: req.cookies.cookie_name
+//set cookie: res.cookie(cookie_name, 'cookie_value', /*optional*/{ maxAge: minute,HttpOnly: true });
+//delete cookie: res.clearCookie('cookie_name');
+/*====================================================  */
 //check if the user is in DB;
 //in DB=> send user details and set token
 //not in db=> change status code and response"not in DB"
@@ -16,7 +20,8 @@ module.exports.login = async (req, res) => {
       "SELECT * FROM `charity`.`users` WHERE (`user_name`=? AND `password`=?)",
       [username, password]
     );
-    const token = await getTokenFromCreds(data);
+    console.log("User details:",data);
+    const token = await getTokenFromCreds({username:data.username,password:data.password});
     res.cookie("token", token);
     res.send(data);
   } catch (error) {
@@ -26,7 +31,7 @@ module.exports.login = async (req, res) => {
 
 module.exports.signin = async (req, res) => {
   const { username, password,age,numberPhone} = await req.body;
-  console.log("try access: ", { username, password,age,numberPhone});
+  console.log("try access: ", { username, password});
   if (username != null && password.length > 5) {
     //need to verify that username or password aren't in DB
     if(age && numberPhone ){
@@ -63,3 +68,19 @@ module.exports.signin = async (req, res) => {
       .send("Password must be at list 6 characters or change username");
   }
 };
+
+//logout func
+//see if he has a cookie->yes->clearcookie.
+//no->message ->"you aren't log in".
+module.exports.logout=async(req,res)=>{
+  const cookie = req.cookies.token;
+  if (cookie){
+    //he has a cookie
+    res.clearCookie("token");
+    res.send("Succesfully deleted cookie");
+  }else{
+    //he dosn't have a cookie
+    res.status(401).send("You aren't loged in yet!");
+
+  }
+}
