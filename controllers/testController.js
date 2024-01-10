@@ -2,7 +2,7 @@ const mysql = require("../db/connection");
 const {getCredsFromToken,getTokenFromCreds} = require("../middleware/authenticate")
 
 //const cookieParser = require("cookie-parser");
-
+//מקצועןןןןןן 
 module.exports.test = async () => {
   const [data] = await mysql.query("SELECT * FROM users");
 
