@@ -21,7 +21,7 @@ module.exports.login = async (req, res) => {
       [username, password]
     );
     console.log("User details:",data);
-    const token = await getTokenFromCreds({username:data.username,password:data.password});
+    const token = await getTokenFromCreds({username,password});
     res.cookie("token", token);
     res.send(data);
   } catch (error) {
