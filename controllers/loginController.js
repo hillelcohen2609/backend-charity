@@ -13,7 +13,8 @@ const {
 //not in db=> change status code and response"not in DB"
 module.exports.login = async (req, res) => {
   const { username, password } = await req.body;
-  console.log("username: ", username, "password: ", password);
+  if (username!=undefined && username!= undefined) {
+    console.log("username: ", username, "password: ", password);
   console.log("type of: ", typeof password);
   try {
     const [[data]] = await mysql.query(
@@ -27,14 +28,18 @@ module.exports.login = async (req, res) => {
   } catch (error) {
     res.status(404).send("No user with those creds exist");
   }
+    
+  }else{
+    res.status(401).send("Password or username empty!")
+  }
 };
 
 module.exports.signin = async (req, res) => {
   const { username, password,age,numberPhone} = await req.body;
   console.log("try access: ", { username, password});
-  if (username != null && password.length > 5) {
+  if (username != undefined && password.length > 5) {
     //need to verify that username or password aren't in DB
-    if(age && numberPhone ){
+    if(age!=undefined && numberPhone!=undefined ){
         const [isCredsInDb] = await mysql.query(
             "SELECT * FROM `charity`.`users` WHERE (`user_name`=? OR `password`=?)",
             [username, password]
