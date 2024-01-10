@@ -1,27 +1,32 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
+
 const jwt = require("jsonwebtoken");
-const morgan = require('morgan')
+const morgan = require('morgan');
+require('express-async-errors');
+
 const testRoutes = require("./routes/testRouter");
-const mysql = require("./db/connection")
+const loginRouter = require("./routes/loginRouter");
+//const mysql = require("./db/connection")
 
 const app = express();
 const PORT = 8080;
 
-
+//middle ware
+app.use(cookieParser())
 app.use(morgan("tiny"))
 app.use(express.json());
+
+
+//All routes start here
 app.use("/", testRoutes);
+app.use("/", loginRouter);
 
-mysql.query("SELECT * FROM users")
-.then(data=>{
-    console.log("Success to connect to DB\n",data," \n ======================");
-})
-.catch(err =>{
-    console.log("failed connect to DB");
-});
 
-app.get('/user', (req,res)=>{
-    res.send("Hello Hilllllelllllll")
+//Global error handler
+app.use((err,req,res,next)=>{
+    console.log("===============================\n",err,"\n==================================");
+    res.status(err.status||500).send("Somthing went wrong")
 })
 
 
