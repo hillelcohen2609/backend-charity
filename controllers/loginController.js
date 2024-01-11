@@ -13,7 +13,7 @@ const {
 //not in db=> change status code and response"not in DB"
 module.exports.login = async (req, res) => {
   const { username, password } = await req.body;
-  if (username!=undefined && username!= undefined) {
+  if (username!=undefined && password!= undefined) {
     console.log("username: ", username, "password: ", password);
   console.log("type of: ", typeof password);
   try {
