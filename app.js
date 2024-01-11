@@ -7,6 +7,7 @@ require('express-async-errors');
 
 const testRoutes = require("./routes/testRouter");
 const loginRouter = require("./routes/loginRouter");
+const updateRouter = require("./routes/updateUserDetailRouter")
 //const mysql = require("./db/connection")
 
 const app = express();
@@ -21,6 +22,7 @@ app.use(express.json());
 //All routes start here
 app.use("/", testRoutes);
 app.use("/", loginRouter);
+app.use("/",updateRouter)
 
 
 //Global error handler
