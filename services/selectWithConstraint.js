@@ -16,3 +16,11 @@ module.exports.selectUserByUsername = async (username) => {
     );
     return user;
   };
+
+  module.exports.selectUserById = async (id) => {
+    const [user] = await sql.query(
+      "SELECT * FROM `charity`.`users` WHERE (`user_id`=?)",
+      [username, password]
+    );
+    return user;
+  };
