@@ -35,7 +35,7 @@ const updateUser = async (req, res, id, accessRights, oldUsername) => {
     const ress = await selectUserByUsername(username);
     if (ress.length == 0) {
       //nobody with this username
-      const res = await updateUserInfo(
+      const resss = await updateUserInfo(
         id,
         accessRights,
         username,
@@ -45,7 +45,7 @@ const updateUser = async (req, res, id, accessRights, oldUsername) => {
         access,
         trusted
       );
-      if (ress == 1) {
+      if (resss == 1) {
         res.send("User Update");
       } else {
         res.status(400).send("Error Unsucceed!");
@@ -57,7 +57,7 @@ const updateUser = async (req, res, id, accessRights, oldUsername) => {
 };
 
 module.exports.updateUserDetails = async (req, res) => {
-  const token = await req.cookies.token;
+  const token =  req.cookies &&req.cookies.token;
   console.log("token:",token);
   if (token != undefined) {
     //there is token(did login)
@@ -74,7 +74,8 @@ module.exports.updateUserDetails = async (req, res) => {
         console.log("access", accessRights);
         console.log("in switc case");
         const id = req.params.id;
-        const [[oldUser]] = await selectUserById(id);
+        const [oldUser] = await selectUserById(id);
+        console.log(oldUser);
         if (id == user[0].user_id) {
           //he want to update his self details
           await updateUser(req, res, id, accessRights, oldUser.user_name);
@@ -105,7 +106,8 @@ module.exports.updateUserDetails = async (req, res) => {
 
       }
     } catch (error) {
-      console.log("error",err);
+      console.log("error",error);
+      res.status(401).send("Didn't update successfully");
     }
   } else {
     //he dont have token

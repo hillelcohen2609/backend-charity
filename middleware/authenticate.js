@@ -4,7 +4,7 @@ require("dotenv").config();
 //get user json-> {username:"vjhv",password:" "} return -> token "wsdfghjkl;lkjhgfdsdfghjkllkjhgffghjklkjhgfghj"
 module.exports.getTokenFromCreds = async (userJsonCreds) => {
     try {
-        const token = await jwt.sign(userJsonCreds, process.env.SECRET_KEY, { expiresIn: "0.25h" });
+        const token = await jwt.sign(userJsonCreds, process.env.SECRET_KEY, { expiresIn: "1h" });
         console.log("token: ", token);
         return token;
     } catch (error) {

@@ -20,7 +20,7 @@ module.exports.selectUserByUsername = async (username) => {
   module.exports.selectUserById = async (id) => {
     const [user] = await sql.query(
       "SELECT * FROM `charity`.`users` WHERE (`user_id`=?)",
-      [username, password]
+      [id]
     );
     return user;
   };
