@@ -4,9 +4,7 @@ const {
   selectUserById,
 } = require("../services/selectWithConstraint");
 const { updateUserInfo } = require("../services/executeQueries");
-const {
-  getCredsFromToken,
-} = require("../middleware/authenticate");
+const { getCredsFromToken } = require("../middleware/authenticate");
 
 const updateUser = async (req, res, id, accessRights, oldUsername) => {
   //console.log("id:", id);
@@ -35,7 +33,7 @@ const updateUser = async (req, res, id, accessRights, oldUsername) => {
     const ress = await selectUserByUsername(username);
     if (ress.length == 0) {
       //nobody with this username
-      const res = await updateUserInfo(
+      const resss = await updateUserInfo(
         id,
         accessRights,
         username,
@@ -45,7 +43,7 @@ const updateUser = async (req, res, id, accessRights, oldUsername) => {
         access,
         trusted
       );
-      if (ress == 1) {
+      if (resss == 1) {
         res.send("User Update");
       } else {
         res.status(400).send("Error Unsucceed!");
@@ -57,8 +55,8 @@ const updateUser = async (req, res, id, accessRights, oldUsername) => {
 };
 
 const updateUserDetails = async (req, res) => {
-  const token = await req.cookies.token;
-  console.log("token:",token);
+  const token = (await req.cookies) && req.cookies.token;
+  console.log("token:", token);
   if (token != undefined) {
     //there is token(did login)
     const userJson = await getCredsFromToken(token);
@@ -74,7 +72,8 @@ const updateUserDetails = async (req, res) => {
         console.log("access", accessRights);
         console.log("in switc case");
         const id = req.params.id;
-        const [[oldUser]] = await selectUserById(id);
+        const [oldUser] = await selectUserById(id);
+        console.log(oldUser);
         if (id == user[0].user_id) {
           //he want to update his self details
           await updateUser(req, res, id, accessRights, oldUser.user_name);
@@ -102,10 +101,10 @@ const updateUserDetails = async (req, res) => {
       } else {
         //this user isn't recognize in DB he invented a token
         res.status(404).send("The token is expired log again");
-
       }
     } catch (error) {
-      console.log("error",err);
+      console.log("error", error);
+      res.status(401).send("Didn't update successfully");
     }
   } else {
     //he dont have token
@@ -114,4 +113,5 @@ const updateUserDetails = async (req, res) => {
 };
 module.exports = {
   updateUserDetails,
-}
+  updateUser,
+};

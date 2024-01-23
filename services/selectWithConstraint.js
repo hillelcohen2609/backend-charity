@@ -23,9 +23,8 @@ const selectUserById = async (id) => {
   );
   return user;
 };
-
 module.exports = {
-  selectUserById,
-  selectUserByUsername,
   selectUserByUsernameAndPassword,
+  selectUserByUsername,
+  selectUserById,
 };

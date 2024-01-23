@@ -32,7 +32,7 @@ const updateUserInfo = async (
       break;
 
     case 2:
-      const trustedval = trusted<2||0;
+      const trustedval = trusted<2?trusted:0;
       update = await sql.execute(
         "UPDATE `charity`.`users` SET user_name = ?, password = ?, age = ?, number_phone = ?,access_rights=access_rights,trusted = ? WHERE user_id = ?"
         ,[username,password,age,numberPhone,trustedval,id]
@@ -40,11 +40,11 @@ const updateUserInfo = async (
 
       break;
       case 3:
-      const trustedd = trusted<2||0;
-      const accessval = access<4 || 1;
+      const trustedd = trusted<2?trusted:0;
+      const accessval = access<4?access: 1;
       update = await sql.execute(
         "UPDATE `charity`.`users` SET user_name = ?, password = ?, age = ?, number_phone = ?,access_rights=?,trusted = ? WHERE user_id = ?"
-        ,[username,password,age,numberPhone,accessval,trustedval,id]
+        ,[username,password,age,numberPhone,accessval,trustedd,id]
       );
 
       break;
