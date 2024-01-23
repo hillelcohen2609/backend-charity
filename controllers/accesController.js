@@ -4,7 +4,7 @@ const {
   selectUserByUsernameAndPassword,
 } = require("../services/selectWithConstraint");
 
-module.exports.acces = async (req, res) => {
+const acces = async (req, res) => {
   const token = req.cookies.token;
   //console.log(token);
 
@@ -57,4 +57,7 @@ module.exports.acces = async (req, res) => {
   } else {
     res.status(401).send("Unauthorized");
   }
+};
+module.exports = {
+  acces,
 };

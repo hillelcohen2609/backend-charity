@@ -17,7 +17,7 @@ const {
 //check if the user is in DB;
 //in DB=> send user details and set token
 //not in db=> change status code and response"not in DB"
-module.exports.login = async (req, res) => {
+const login = async (req, res) => {
   const { username, password } = await req.body;
   if (username!=undefined && password!= undefined) {
     console.log("username: ", username, "password: ", password);
@@ -40,7 +40,7 @@ module.exports.login = async (req, res) => {
   }
 };
 
-module.exports.signin = async (req, res) => {
+const signin = async (req, res) => {
   const { username, password, age, numberPhone } = await req.body;
   console.log("try access: ", {username, password, age, numberPhone });
   if (username != undefined && password.length > 5) {
@@ -91,7 +91,7 @@ module.exports.signin = async (req, res) => {
 //logout func
 //see if he has a cookie->yes->clearcookie.
 //no->message ->"you aren't log in".
-module.exports.logout = async (req, res) => {
+const logout = async (req, res) => {
   const cookie = req.cookies.token;
   if (cookie) {
     //he has a cookie
@@ -102,3 +102,8 @@ module.exports.logout = async (req, res) => {
     res.status(401).send("You aren't loged in yet!");
   }
 };
+module.exports = {
+  login,
+  signin,
+  logout,
+}

@@ -9,6 +9,7 @@ const testRoutes = require("./routes/testRouter");
 const loginRouter = require("./routes/loginRouter");
 const updateRouter = require("./routes/updateUserDetailRouter")
 const accesRouter = require("./routes/accesRouter")
+const productLoan = require("./routes/ProductLoan")
 //const mysql = require("./db/connection")
 
 const app = express();
@@ -25,6 +26,7 @@ app.use("/", testRoutes);
 app.use("/", loginRouter);
 app.use("/",updateRouter)
 app.use("/", accesRouter)
+app.use("/", productLoan)
 
 
 //Global error handler

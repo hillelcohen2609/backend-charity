@@ -1,7 +1,7 @@
 const sql = require("../db/connection");
 
 //i
-module.exports.insertNewUser = async (username, password, age, numberPhone) => {
+const insertNewUser = async (username, password, age, numberPhone) => {
   const insertUser = await sql.execute(
     "INSERT INTO `charity`.`users` (user_name,password,age,number_phone,access_rights,trusted) VALUES (?, ?, ?, ?, ?, ?)",
     [username, password, age, numberPhone, 1, 0]
@@ -11,7 +11,7 @@ module.exports.insertNewUser = async (username, password, age, numberPhone) => {
   return { affectedRows, insertId };
 };
 
-module.exports.updateUserInfo = async (
+const updateUserInfo = async (
   id,
   level,
   username,
@@ -55,3 +55,7 @@ module.exports.updateUserInfo = async (
   return  affectedRows;
   
 };
+module.exports = {
+  updateUserInfo, 
+  insertNewUser,
+}

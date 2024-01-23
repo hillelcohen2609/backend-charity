@@ -56,7 +56,7 @@ const updateUser = async (req, res, id, accessRights, oldUsername) => {
   }
 };
 
-module.exports.updateUserDetails = async (req, res) => {
+const updateUserDetails = async (req, res) => {
   const token = await req.cookies.token;
   console.log("token:",token);
   if (token != undefined) {
@@ -112,3 +112,6 @@ module.exports.updateUserDetails = async (req, res) => {
     res.status(404).send("Login first/again");
   }
 };
+module.exports = {
+  updateUserDetails,
+}
