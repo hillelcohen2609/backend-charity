@@ -11,6 +11,7 @@ const updateRouter = require("./routes/updateUserDetailRouter")
 const accesRouter = require("./routes/accesRouter")
 const productLoan = require("./routes/ProductLoanRouter")
 const ProductUpload = require("./routes/ProductUploadRouter")
+const seeUser = require("./routes/seeUserRouter")
 //const mysql = require("./db/connection")
 
 const app = express();
@@ -29,6 +30,7 @@ app.use("/",updateRouter)
 app.use("/", accesRouter)
 app.use("/", productLoan)
 app.use("/", ProductUpload)
+app.use("/", seeUser)
 
 
 //Global error handler
