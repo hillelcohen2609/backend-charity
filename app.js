@@ -13,6 +13,7 @@ const productLoan = require("./routes/ProductLoan");
 const ProductUpload = require("./routes/ProductUploadRouter");
 const seeUser = require("./routes/seeUserRouter");
 const deleteUser = require("./routes/deleteUserRouter");
+const ProductReturn = require("./routes/ProductReturn")
 //const mysql = require("./db/connection")
 
 const app = express();
@@ -32,6 +33,7 @@ app.use("/", productLoan);
 app.use("/", ProductUpload);
 app.use("/", seeUser);
 app.use("/", deleteUser);
+app.use("/",ProductReturn )
 
 //Global error handler
 app.use((err, req, res, next) => {

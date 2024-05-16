@@ -18,7 +18,24 @@ const ProductUpdate = async (id) => {
   }
   return updateProduct;
 };
+
+const updatedBorrow = async (user_id) => {
+  try {
+    const [borrowerUpdate] = await sql.execute(
+      "INSERT INTO `charity`.`borrowers` (user_id, is_returned) VALUES (?, ?)",
+      [user_id, 0]
+    );
+
+    console.log("Borrower updated successfully");
+    return borrowerUpdate;
+  } catch (error) {
+    console.error("Error in updating borrowers:", error);
+    throw error;
+  }
+};
+
 module.exports = {
   examination,
   ProductUpdate,
+  updatedBorrow,
 };

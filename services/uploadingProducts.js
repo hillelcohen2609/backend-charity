@@ -9,7 +9,6 @@ const uploadingProducts = async (product_name, category) => {
     const { fieldCount, affectedRows, insertId } = resultSetHeader;
     console.log(resultSetHeader);
     return { affectedRows, resultSetHeader };
-
   } catch (error) {
     console.error("Error in uploadingProducts:", error);
     throw error;

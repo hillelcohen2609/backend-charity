@@ -6,6 +6,7 @@ const selectUserByUsernameAndPassword = async (username, password) => {
     "SELECT * FROM `charity`.`users` WHERE (`user_name`=? AND `password`=?)",
     [username, password]
   );
+
   return user;
 };
 const selectUserByUsername = async (username) => {
@@ -31,8 +32,6 @@ const selectUserByUserId = async (userId) => {
   );
   return user;
 };
-
-
 
 module.exports = {
   selectUserByUsernameAndPassword,

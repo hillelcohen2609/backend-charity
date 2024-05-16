@@ -1,4 +1,3 @@
-
 const { getCredsFromToken } = require("../middleware/authenticate");
 const {
   selectUserByUsernameAndPassword,
@@ -17,6 +16,7 @@ const ProductUpload = async (req, res) => {
   if (trusted == 1 && product_name != undefined && category != undefined) {
     try {
       const ProductUpload = uploadingProducts(product_name, category);
+
       res.send("The product has been uploaded successfully");
       /*  res.send("Product uploaded successfully"); */
     } catch (err) {

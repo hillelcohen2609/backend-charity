@@ -9,12 +9,12 @@ const deleteUser = async (req, res) => {
   const token = req.cookies.token;
   const creds = await getCredsFromToken(token);
   const result = await selectUserByUsernameAndPassword(
-    creds.username,
+    creds.username,  
     creds.password
   );
-/* const userIdLogin = result[0].user_id; */
+  /* const userIdLogin = result[0].user_id; */
 
-  const accesRight = result[0].acces_rights;  
+  const accesRight = result[0].acces_rights;
   const userId = req.params.userId;
   const examinationUserId = await selectUserByUserId(userId);
   const ProductReturn = examinationUserId[0];

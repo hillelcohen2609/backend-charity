@@ -6,6 +6,7 @@ const {
 const {
   examination,
   ProductUpdate,
+  updatedBorrow,
 } = require("../services/examinationOfProduct");
 
 const ProductLoan = async (req, res) => {
@@ -28,6 +29,8 @@ const ProductLoan = async (req, res) => {
     res.json({ messages }); */
     if (trusted == 1 && productAvailble == 1) {
       res.send("Hi, you can borrow");
+      const borrowerUpdate = await updatedBorrow(result[0].user_id);
+
       console.log("The product you selected is:", product[0].product_name);
     } else if (productAvailble == 0 && trusted == 1) {
       res.send("The product is not available");
