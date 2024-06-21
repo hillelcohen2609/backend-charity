@@ -24,9 +24,9 @@ const updateUser = async (req, res, id, accessRights, oldUsername) => {
     );
     console.log("res:", ress);
     if (ress == 1) {
-      res.send("User Update");
+      res.status(200).send({ success: true, message: "User Update" });
     } else {
-      res.status(400).send("Error Unsucceed!");
+      res.status(400).send({ success: false, message: "Error Unsucceed!" });
     }
   } else {
     //update the username
@@ -44,12 +44,12 @@ const updateUser = async (req, res, id, accessRights, oldUsername) => {
         trusted
       );
       if (resss == 1) {
-        res.send("User Update");
+        res.send({ success: true, message: "User Update" });
       } else {
-        res.status(400).send("Error Unsucceed!");
+        res.status(400).send({ success: false, message: "Error Unsucceed!" });
       }
     } else {
-      res.status(400).send("Try another username");
+      res.status(400).send({ success: false, message: "Try another username" });
     }
   }
 };
@@ -87,7 +87,10 @@ const updateUserDetails = async (req, res) => {
                 await updateUser(req, res, id, accessRights, oldUser.user_name);
               } else {
                 //he isn't allowed to do so
-                res.status(401).send("You arn't allowed to this resource");
+                res.status(401).send({
+                  success: false,
+                  message: "You arn't allowed to this resource",
+                });
               }
             } else {
               //Admin he can do everything
@@ -95,20 +98,27 @@ const updateUserDetails = async (req, res) => {
             }
           } else {
             //he is not allowed (regular user)
-            res.status(401).send("You arn't allowed to this resource");
+            res.status(401).send({
+              success: false,
+              message: "You arn't allowed to this resource",
+            });
           }
         }
       } else {
         //this user isn't recognize in DB he invented a token
-        res.status(404).send("The token is expired log again");
+        res
+          .status(404)
+          .send({ success: false, message: "The token is expired log again" });
       }
     } catch (error) {
       console.log("error", error);
-      res.status(401).send("Didn't update successfully");
+      res
+        .status(401)
+        .send({ success: false, message: "Didn't update successfully" });
     }
   } else {
     //he dont have token
-    res.status(404).send("Login first/again");
+    res.status(404).send({ success: false, message: "Login first/again" });
   }
 };
 module.exports = {

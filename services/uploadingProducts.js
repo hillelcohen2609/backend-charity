@@ -6,8 +6,7 @@ const uploadingProducts = async (product_name, category) => {
       "INSERT INTO `charity`. `products` (product_name, category, product_is_availble) VALUES (?,?,?)",
       [product_name, category, 1]
     );
-    const { fieldCount, affectedRows, insertId } = resultSetHeader;
-    console.log(resultSetHeader);
+    const { affectedRows } = resultSetHeader;
     return { affectedRows, resultSetHeader };
   } catch (error) {
     console.error("Error in uploadingProducts:", error);

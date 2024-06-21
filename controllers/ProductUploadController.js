@@ -17,14 +17,22 @@ const ProductUpload = async (req, res) => {
     try {
       const ProductUpload = uploadingProducts(product_name, category);
 
-      res.send("The product has been uploaded successfully");
+      res.status(200).send({
+        success: true,
+        message: "The product has been uploaded successfully",
+      });
       /*  res.send("Product uploaded successfully"); */
     } catch (err) {
       console.error(err);
-      res.status(500).send("Error uploading product");
+      res
+        .status(500)
+        .send({ success: false, message: "Error uploading product" });
     }
   } else {
-    res.send("Sorry, you cannot upload the product");
+    res.send({
+      success: false,
+      message: "Sorry, you cannot upload the product",
+    });
   }
 };
 

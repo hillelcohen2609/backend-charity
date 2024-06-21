@@ -19,14 +19,14 @@ const ProductUpdate = async (id) => {
   return updateProduct;
 };
 
-const updatedBorrow = async (user_id) => {
+const updatedBorrow = async (user_id, productId) => {
   try {
     const [borrowerUpdate] = await sql.execute(
-      "INSERT INTO `charity`.`borrowers` (user_id, is_returned) VALUES (?, ?)",
-      [user_id, 0]
+      "INSERT INTO `charity`.`borrowers` (user_id, is_returned, id_product) VALUES (?, ?,?)",
+      [user_id, 0, productId]
     );
 
-    console.log("Borrower updated successfully");
+    console.log("Borrower updated sucuplocessfully");
     return borrowerUpdate;
   } catch (error) {
     console.error("Error in updating borrowers:", error);

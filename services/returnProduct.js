@@ -1,41 +1,49 @@
 const sql = require("../db/connection");
 
-const userProductDelete = async (user_id) => {
-  const [deleteUserId] = await sql.execute(
-    "DELETE FROM `charity` . `borrowers` WHERE `user_id`=?",
-    [user_id]
-  );
-  console.log(deleteUserId);
-};
+// const userProductDelete = async (user_id) => {
+//   const [deleteUserId] = await sql.execute(
+//     "DELETE FROM `charity` . `borrowers` WHERE `user_id`=?",
+//     [user_id]
+//   );
+//   console.log(deleteUserId);
+// };
 
-const ProducReturn = async (user_id) => {
-  const [updateReturnProduct] = await sql.execute(
-    "UPDATE `charity`. `borrowers` SET is_returned =? WHERE `user_id`=?",
-    [0, user_id]
-  );
-};
+// const ProducReturn = async (user_id) => {
+//   const [updateReturnProduct] = await sql.execute(
+//     "UPDATE `charity`. `borrowers` SET is_returned =? WHERE `user_id`=?",
+//     [0, user_id]
+//   );
+// };
 
-const returnProduct = async (user_id) => {
+const returnProduct = async (user_id, productId) => {
   try {
     const [resultReturnProduct] = await sql.execute(
-      "SELECT * FROM `charity`.`borrowers` WHERE `user_id` IN (?)",
-      [user_id]
+      "SELECT * FROM `charity`.`borrowers` WHERE `user_id` =? AND id_product=?",
+      [user_id, productId]
     );
-    resultReturnProduct.forEach((result) => {
-      console.log("hiiiiiii:", result.is_returned);
+    if (resultReturnProduct.length > 0) {
+      await sql.execute(
+        "UPDATE `charity`.`borrowers` SET `is_returned` = 1 WHERE `id_product`=? AND `user_id`=?",
+        [productId, user_id]
+      );
 
-      if (result.is_returned == 0) {
-        userProductDelete(result.user_id);
-        console.log("deleted");
-      } else if (result.is_returned == 1) {
-        ProducReturn(result.user_id);
-        console.log("The product return was successful");
-      } else {
-        console.log("ERROR");
-      }
-    });
+      await sql.execute(
+        "UPDATE `charity`.`products` SET `product_is_availble` = 1 WHERE `id`=?",
+        [productId]
+      );
 
-    return resultReturnProduct;
+      return {
+        success: true,
+        message: "Product return was successful",
+      };
+
+      //affected row
+    } else {
+      return {
+        success: false,
+        message: "There are no products to return",
+      };
+    }
   } catch (error) {
     console.error("Error in updating borrowers:", error);
     throw error;
@@ -43,9 +51,9 @@ const returnProduct = async (user_id) => {
 };
 module.exports = {
   returnProduct,
-  userProductDelete,
-  ProducReturn,
+  //   userProductDelete,
+  //   ProducReturn,
 };
 
-//  "SELECT * FROM `charity`. `users` WHERE `acces_rights` IN (?, ?)",
-[2, 1];
+// //  "SELECT * FROM `charity`. `users` WHERE `acces_rights` IN (?, ?)",
+// [2, 1];

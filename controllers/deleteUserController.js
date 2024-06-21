@@ -9,7 +9,7 @@ const deleteUser = async (req, res) => {
   const token = req.cookies.token;
   const creds = await getCredsFromToken(token);
   const result = await selectUserByUsernameAndPassword(
-    creds.username,  
+    creds.username,
     creds.password
   );
   /* const userIdLogin = result[0].user_id; */
@@ -27,13 +27,13 @@ const deleteUser = async (req, res) => {
     try {
       const userDeleteId = await userDelete(userId);
       console.log(userDeleteId);
-      res.send("User deleted successfully");
+      res.send({ success: false, message: "User deleted successfully" });
     } catch (err) {
       console.error(err);
-      res.status(500).send("Error user deleted");
+      res.status(500).send({ success: false, message: "Error user deleted" });
     }
   } else {
-    res.send("You cannot delete this user");
+    res.send({ message: "You cannot delete this user" });
   }
 };
 

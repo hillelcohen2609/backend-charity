@@ -6,6 +6,8 @@ const {
 } = require("../services/selectWithConstraint");
 
 const ProductReturnController = async (req, res) => {
+  const productId = req.params.id;
+
   const token = req.cookies.token;
   const creds = await getCredsFromToken(token);
   const result = await selectUserByUsernameAndPassword(
@@ -14,12 +16,15 @@ const ProductReturnController = async (req, res) => {
   );
 
   try {
-    const resultReturnProduct = await returnProduct(result[0].user_id);
+    const resultReturnProducts = await returnProduct(
+      result[0].user_id,
+      productId
+    );
 
-    res.send(resultReturnProduct);
+    res.send(resultReturnProducts);
   } catch (err) {
     console.error(err);
-    res.status(500).send("Server Error");
+    res.status(500).send({ success: false, message: "Server Error" });
   }
 };
 

@@ -17,31 +17,34 @@ const ProductLoan = async (req, res) => {
     creds.password
   );
 
-  try {
-    const id = req.params.id;
-    console.log("id:", id);
-    const product = await examination(id);
-    const updateResult = await ProductUpdate(id);
+  const id = req.params.id;
+  const trusted = result[0].trusted;
 
-    const trusted = result[0].trusted;
+  try {
+    const product = await examination(id);
     const productAvailble = product[0].product_is_availble;
-    /* const messages = ["Message 1", "Message 2", "Message 3"];
-    res.json({ messages }); */
+
     if (trusted == 1 && productAvailble == 1) {
-      res.send("Hi, you can borrow");
-      const borrowerUpdate = await updatedBorrow(result[0].user_id);
+      res.status(200).send({ success: true, message: "Hi, you can borrow" });
+      const updateResult = await ProductUpdate(id);
+      // console.log(productAvailble);
+      const borrowerUpdate = await updatedBorrow(result[0].user_id, id);
 
       console.log("The product you selected is:", product[0].product_name);
     } else if (productAvailble == 0 && trusted == 1) {
-      res.send("The product is not available");
+      res
+        .status(400)
+        .send({ success: false, message: "The product is not available" });
     } else {
-      res.send("I'm sorry, but you can't borrow");
+      res
+        .status(403)
+        .send({ success: false, message: "I'm sorry, but you can't borrow" });
     }
   } catch (err) {
     console.error(err);
-    res.status(500).send("Server Error");
+    res.status(500).send({ success: false, message: "Server Error" });
   }
-  console.log("number of trusted", result[0].trusted);
+  // console.log("number of trusted", result[0].trusted);
 };
 
 module.exports = {

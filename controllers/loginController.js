@@ -4,7 +4,7 @@ const {
   getTokenFromCreds,
 } = require("../middleware/authenticate");
 
-const {insertNewUser} = require("../services/executeQueries");
+const { insertNewUser } = require("../services/executeQueries");
 const {
   selectUserByUsername,
   selectUserByUsernameAndPassword,
@@ -19,7 +19,7 @@ const {
 //not in db=> change status code and response"not in DB"
 const login = async (req, res) => {
   const { username, password } = await req.body;
-  if (username!=undefined && password!= undefined) {
+  if (username != undefined && password != undefined) {
     console.log("username: ", username, "password: ", password);
     console.log("type of: ", typeof password);
     try {
@@ -30,19 +30,25 @@ const login = async (req, res) => {
         res.cookie("token", token);
         res.send(user[0]);
       } else {
-        res.status(401).send("No user with those creds exist");
+        res
+          .status(401)
+          .send({ success: false, message: "No user with those creds exist" });
       }
     } catch (error) {
-      res.status(404).send("Error in select user from DB");
+      res
+        .status(404)
+        .send({ success: false, message: "Error in select user from DB" });
     }
   } else {
-    res.status(401).send("Password or username empty!");
+    res
+      .status(401)
+      .send({ success: false, message: "Password or username empty!" });
   }
 };
 
 const signin = async (req, res) => {
   const { username, password, age, numberPhone } = await req.body;
-  console.log("try access: ", {username, password, age, numberPhone });
+  console.log("try access: ", { username, password, age, numberPhone });
   if (username != undefined && password.length > 5) {
     //need to verify that username or password aren't in DB
     if (age != undefined && numberPhone != undefined) {
@@ -50,41 +56,56 @@ const signin = async (req, res) => {
       if (isCredsInDb.length == 0) {
         //insert user value in db
         try {
-          const result = await insertNewUser(username,password,age,numberPhone);
-          console.log("result: ",result);
-          if (result.affectedRows==1) {
-            console.log("result: ", result);
-          const token = await getTokenFromCreds({
+          const result = await insertNewUser(
             username,
             password,
-          });
-          res.cookie("token", token);
-          res.send({
-            user_id: result.insertId,
-            user_name: username,
-            password,
             age,
-            number_phone: numberPhone,
-            access_rights: 1,
-            trusted: 0,
-          });
-          }else{
-            res.status(401).send("error in inserting values");
+            numberPhone
+          );
+          console.log("result: ", result);
+          if (result.affectedRows == 1) {
+            console.log("result: ", result);
+            const token = await getTokenFromCreds({
+              username,
+              password,
+            });
+            res.cookie("token", token);
+            res.status(200).send({
+              user_id: result.insertId,
+              user_name: username,
+              password,
+              age,
+              number_phone: numberPhone,
+              access_rights: 1,
+              trusted: 0,
+              success: true,
+            });
+          } else {
+            res
+              .status(401)
+              .send({ success: false, message: "error in inserting values" });
           }
         } catch (error) {
-          console.log("error in inserting values",error);
-          res.status(401).send("error in inserting values");
+          console.log("error in inserting values", error);
+          res
+            .status(401)
+            .send({ success: false, message: "error in inserting values" });
         }
-      }else{
-        res.status(401).send("Try another username");
+      } else {
+        res
+          .status(401)
+          .send({ success: false, message: "Try another username" });
       }
     } else {
-      res.status(401).send("All details must be plain!");
+      res
+        .status(401)
+        .send({ success: false, message: "All details must be plain!" });
     }
   } else {
-    res
-      .status(401)
-      .send("Password must be at list 6 characters and username not null");
+    res.status(401).send({
+      success: false,
+      message: "Password must be at list 6 characters and username not null",
+    });
   }
 };
 
@@ -96,14 +117,18 @@ const logout = async (req, res) => {
   if (cookie) {
     //he has a cookie
     res.clearCookie("token");
-    res.send("Succesfully deleted cookie");
+    res
+      .status(200)
+      .send({ success: true, message: "Succesfully deleted cookie" });
   } else {
     //he dosn't have a cookie
-    res.status(401).send("You aren't loged in yet!");
+    res
+      .status(401)
+      .send({ success: false, message: "You aren't loged in yet!" });
   }
 };
 module.exports = {
   login,
   signin,
   logout,
-}
+};

@@ -4,6 +4,6 @@ const {
 } = require("../controllers/ProductReturnController");
 
 const router = express.Router();
-router.get("/productReturn", ProductReturnController);
+router.post("/productReturn/:id", ProductReturnController);
 
 module.exports = router;

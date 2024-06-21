@@ -30,13 +30,15 @@ const acces = async (req, res) => {
         );
         console.log(product);
         if (product.length > 0) {
-          res.send(product);
+          res.send({ product: product });
         } else {
-          res.status(401).send("No products available");
+          res
+            .status(401)
+            .send({ success: false, message: "No products available" });
         }
       } catch (err) {
         console.error(err);
-        res.status(500).send("Server Error");
+        res.status(500).send({ success: false, message: "Server Error" });
       }
     } else {
       try {
@@ -45,17 +47,19 @@ const acces = async (req, res) => {
         );
         console.log(product);
         if (product.length > 0) {
-          res.send(product);
+          res.send({ product: product });
         } else {
-          res.status(401).send("No products available");
+          res
+            .status(401)
+            .send({ success: false, message: "No products available" });
         }
       } catch (err) {
         console.error(err);
-        res.status(500).send("Server Error");
+        res.status(500).send({ success: false, message: "Server Error" });
       }
     }
   } else {
-    res.status(401).send("Unauthorized");
+    res.status(401).send({ success: false, message: "Unauthorized" });
   }
 };
 module.exports = {
