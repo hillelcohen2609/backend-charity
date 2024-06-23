@@ -7,7 +7,6 @@ const { updateUserInfo } = require("../services/executeQueries");
 const { getCredsFromToken } = require("../middleware/authenticate");
 
 const updateUser = async (req, res, id, accessRights, oldUsername) => {
-  //console.log("id:", id);
   const body = await req.body;
   const { username, password, age, numberPhone, access, trusted } = body;
   if (oldUsername == username) {
@@ -22,7 +21,6 @@ const updateUser = async (req, res, id, accessRights, oldUsername) => {
       access,
       trusted
     );
-    console.log("res:", ress);
     if (ress == 1) {
       res.status(200).send({ success: true, message: "User Update" });
     } else {
@@ -56,24 +54,18 @@ const updateUser = async (req, res, id, accessRights, oldUsername) => {
 
 const updateUserDetails = async (req, res) => {
   const token = (await req.cookies) && req.cookies.token;
-  console.log("token:", token);
   if (token != undefined) {
     //there is token(did login)
     const userJson = await getCredsFromToken(token);
-    console.log("user json ", userJson);
     const { username, password } = userJson;
     //need to check what level of access right he got
     try {
       const user = await selectUserByUsernameAndPassword(username, password);
-      console.log("User details:", user);
       if (user.length == 1) {
         //there is such user in DB
         const accessRights = user[0].access_rights;
-        console.log("access", accessRights);
-        console.log("in switc case");
         const id = req.params.id;
         const [oldUser] = await selectUserById(id);
-        console.log(oldUser);
         if (id == user[0].user_id) {
           //he want to update his self details
           await updateUser(req, res, id, accessRights, oldUser.user_name);
@@ -111,7 +103,7 @@ const updateUserDetails = async (req, res) => {
           .send({ success: false, message: "The token is expired log again" });
       }
     } catch (error) {
-      console.log("error", error);
+      console.error("error", error);
       res
         .status(401)
         .send({ success: false, message: "Didn't update successfully" });

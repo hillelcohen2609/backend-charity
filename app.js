@@ -8,13 +8,13 @@ require("express-async-errors");
 const testRoutes = require("./routes/testRouter");
 const loginRouter = require("./routes/loginRouter");
 const updateRouter = require("./routes/updateUserDetailRouter");
-const accesRouter = require("./routes/accesRouter");
+const allProductRouter = require("./routes/allProductRouter");
 const productLoan = require("./routes/ProductLoan");
 const ProductUpload = require("./routes/ProductUploadRouter");
 const seeUser = require("./routes/seeUserRouter");
 const deleteUser = require("./routes/deleteUserRouter");
-const ProductReturn = require("./routes/ProductReturn")
-const ProductDelete = require("./routes/productDelete")
+const ProductReturn = require("./routes/ProductReturn");
+const ProductDelete = require("./routes/productDelete");
 //const mysql = require("./db/connection")
 
 const app = express();
@@ -29,13 +29,13 @@ app.use(express.json());
 app.use("/", testRoutes);
 app.use("/", loginRouter);
 app.use("/", updateRouter);
-app.use("/", accesRouter);
+app.use("/", allProductRouter);
 app.use("/", productLoan);
 app.use("/", ProductUpload);
 app.use("/", seeUser);
 app.use("/", deleteUser);
-app.use("/",ProductReturn )
-app.use("/",ProductDelete )
+app.use("/", ProductReturn);
+app.use("/", ProductDelete);
 
 //Global error handler
 app.use((err, req, res, next) => {

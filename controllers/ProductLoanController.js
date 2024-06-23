@@ -26,11 +26,8 @@ const ProductLoan = async (req, res) => {
 
     if (trusted == 1 && productAvailble == 1) {
       res.status(200).send({ success: true, message: "Hi, you can borrow" });
-      const updateResult = await ProductUpdate(id);
-      // console.log(productAvailble);
-      const borrowerUpdate = await updatedBorrow(result[0].user_id, id);
-
-      console.log("The product you selected is:", product[0].product_name);
+      await ProductUpdate(id);
+      await updatedBorrow(result[0].user_id, id);
     } else if (productAvailble == 0 && trusted == 1) {
       res
         .status(400)
@@ -44,7 +41,6 @@ const ProductLoan = async (req, res) => {
     console.error(err);
     res.status(500).send({ success: false, message: "Server Error" });
   }
-  // console.log("number of trusted", result[0].trusted);
 };
 
 module.exports = {

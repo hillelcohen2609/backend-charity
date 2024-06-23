@@ -18,15 +18,13 @@ const deleteUser = async (req, res) => {
   const userId = req.params.userId;
   const examinationUserId = await selectUserByUserId(userId);
   const ProductReturn = examinationUserId[0];
-  console.log(ProductReturn);
 
   if (
     (accesRight == 3 && ProductReturn == undefined) ||
     (accesRight == 3 && ProductReturn.is_returned == 1)
   ) {
     try {
-      const userDeleteId = await userDelete(userId);
-      console.log(userDeleteId);
+      await userDelete(userId);
       res.send({ success: false, message: "User deleted successfully" });
     } catch (err) {
       console.error(err);

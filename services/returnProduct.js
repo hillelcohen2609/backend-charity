@@ -1,20 +1,5 @@
 const sql = require("../db/connection");
 
-// const userProductDelete = async (user_id) => {
-//   const [deleteUserId] = await sql.execute(
-//     "DELETE FROM `charity` . `borrowers` WHERE `user_id`=?",
-//     [user_id]
-//   );
-//   console.log(deleteUserId);
-// };
-
-// const ProducReturn = async (user_id) => {
-//   const [updateReturnProduct] = await sql.execute(
-//     "UPDATE `charity`. `borrowers` SET is_returned =? WHERE `user_id`=?",
-//     [0, user_id]
-//   );
-// };
-
 const returnProduct = async (user_id, productId) => {
   try {
     const [resultReturnProduct] = await sql.execute(
@@ -51,9 +36,4 @@ const returnProduct = async (user_id, productId) => {
 };
 module.exports = {
   returnProduct,
-  //   userProductDelete,
-  //   ProducReturn,
 };
-
-// //  "SELECT * FROM `charity`. `users` WHERE `acces_rights` IN (?, ?)",
-// [2, 1];

@@ -12,7 +12,6 @@ const seeUser = async (req, res) => {
     creds.password
   );
   const accesRight = result[0].acces_rights;
-  console.log(accesRight);
   if (accesRight == 3) {
     const seeUser = await seeAllUser();
     res.send(seeUser);

@@ -20,11 +20,8 @@ const {
 const login = async (req, res) => {
   const { username, password } = await req.body;
   if (username != undefined && password != undefined) {
-    console.log("username: ", username, "password: ", password);
-    console.log("type of: ", typeof password);
     try {
       const user = await selectUserByUsernameAndPassword(username, password);
-      console.log("User details:", user);
       if (user.length == 1) {
         const token = await getTokenFromCreds({ username, password });
         res.cookie("token", token);
@@ -48,7 +45,6 @@ const login = async (req, res) => {
 
 const signin = async (req, res) => {
   const { username, password, age, numberPhone } = await req.body;
-  console.log("try access: ", { username, password, age, numberPhone });
   if (username != undefined && password.length > 5) {
     //need to verify that username or password aren't in DB
     if (age != undefined && numberPhone != undefined) {
@@ -62,9 +58,7 @@ const signin = async (req, res) => {
             age,
             numberPhone
           );
-          console.log("result: ", result);
           if (result.affectedRows == 1) {
-            console.log("result: ", result);
             const token = await getTokenFromCreds({
               username,
               password,
@@ -86,7 +80,7 @@ const signin = async (req, res) => {
               .send({ success: false, message: "error in inserting values" });
           }
         } catch (error) {
-          console.log("error in inserting values", error);
+          console.error("error in inserting values", error);
           res
             .status(401)
             .send({ success: false, message: "error in inserting values" });
